@@ -1,0 +1,642 @@
+{
+	"state": "AZ",
+	"district": 5,
+	"page": 1,
+	"sections": [
+		{
+			"desc": "header of ballot",
+			"secCoords": {
+				"TL_X": 121,
+				"TL_Y": 211,
+				"BR_X": 1588,
+				"BR_Y": 458
+			},
+			"bubbles": null,
+			"writeins": null,
+			"signatures": null
+		},
+		{
+			"desc": "president / vice president",
+			"max": 1,
+			"secCoords": {
+				"TL_X": 130,
+				"TL_Y": 960,
+				"BR_X": 618,
+				"BR_Y": 1660
+			},
+			"bubbles": [
+				{
+					"TL_X": 560,
+					"TL_Y": 1075,
+					"BR_X": 593,
+					"BR_Y": 1100,
+					"text": "Trump Pence"
+				},
+				{
+					"TL_X": 560,
+					"TL_Y": 1225,
+					"BR_X": 593,
+					"BR_Y": 1250,
+					"text": "Biden Harris"
+				},
+				{
+					"TL_X": 560,
+					"TL_Y": 1375,
+					"BR_X": 593,
+					"BR_Y": 1400,
+					"text": "Jorgensen Cohen"
+				},
+				{
+					"TL_X": 560,
+					"TL_Y": 1525,
+					"BR_X": 593,
+					"BR_Y": 1550,
+					"text": "Write-In"
+				}
+			],
+			"writeins": [
+				{
+					"TL_X": 130,
+					"TL_Y": 1550,
+					"BR_X": 618,
+					"BR_Y": 1660
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "us senate",
+			"max": 1,
+			"secCoords": {
+				"TL_X": 130,
+				"TL_Y": 1665,
+				"BR_X": 618,
+				"BR_Y": 1910
+			},
+			"bubbles": [
+				{
+					"TL_X": 560,
+					"TL_Y": 1775,
+					"BR_X": 593,
+					"BR_Y": 1800,
+					"text": "McSally"
+				},
+				{
+					"TL_X": 560,
+					"TL_Y": 1925,
+					"BR_X": 593,
+					"BR_Y": 1950,
+					"text": "Kelly"
+				},
+				{
+					"TL_X": 560,
+					"TL_Y": 2075,
+					"BR_X": 593,
+					"BR_Y": 2100,
+					"text": "Write-In"
+				}
+			],
+			"writeins": [
+				{
+					"TL_X": 270,
+					"TL_Y": 1869,
+					"BR_X": 554,
+					"BR_Y": 1906
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "us rep",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "state senate",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "state rep",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "corporation commisioner",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "board of supervisors",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "county assessor",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "county attorney",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "county recorder",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "county school superintendent",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "sherrif",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "county treasurer",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "special healthcare",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "prop 449",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "county community college at-large",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "county community college district 1",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "school gov. board member",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "question 1",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		},
+		{
+			"desc": "",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		}
+]
+}

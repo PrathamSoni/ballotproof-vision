@@ -38,6 +38,7 @@ canvasElem.addEventListener("mousedown", function(e) {
     getMousePosition(canvasElem, e);
     if (cornerArray.length == 4) {
       crop (src, cornerArray);
+      cornerArray = [];
     }
     });
 
@@ -47,13 +48,33 @@ function crop(src, cornerArray) {
   let b = cornerArray[1];
   let c = cornerArray[2];
   let d = cornerArray[3];
-  let M = cv.matFromArray(2, 3, cv.CV_64FC1, [1, 0, 50, 0, 1, 100]);
-  let dsize = new cv.Size(src.rows, src.cols);
-  // You can try more different parameters
-  cv.warpAffine(src, dst, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+  let corner1 = new cv.Point(a[0], a[1]);
+  let corner2 = new cv.Point(b[0], b[1]);
+  let corner3 = new cv.Point(c[0], c[1]);
+  let corner4 = new cv.Point(d[0], d[1]);
+
+  let cropArray = [{ corner: corner1 }, { corner: corner2 }, { corner: corner3 }, { corner: corner4 }];
+
+  cropArray.sort((item1, item2) => { return (item1.corner.y < item2.corner.y) ? -1 : (item1.corner.y > item2.corner.y) ? 1 : 0; }).slice(0, 5);
+
+  let tl = cropArray[0].corner.x < cropArray[1].corner.x ? cropArray[0] : cropArray[1];
+  let tr = cropArray[0].corner.x > cropArray[1].corner.x ? cropArray[0] : cropArray[1];
+  let bl = cropArray[2].corner.x < cropArray[3].corner.x ? cropArray[2] : cropArray[3];
+  let br = cropArray[2].corner.x > cropArray[3].corner.x ? cropArray[2] : cropArray[3];
+
+  let widthBottom = Math.hypot(br.corner.x - bl.corner.x, br.corner.y - bl.corner.y);
+  let widthTop = Math.hypot(tr.corner.x - tl.corner.x, tr.corner.y - tl.corner.y);
+  let theWidth = (widthBottom > widthTop) ? widthBottom : widthTop;
+  let heightRight = Math.hypot(tr.corner.x - br.corner.x, tr.corner.y - br.corner.y);
+  let heightLeft = Math.hypot(tl.corner.x - bl.corner.x, tr.corner.y - bl.corner.y);
+  let theHeight = (heightRight > heightLeft) ? heightRight : heightLeft;
+
+  let finalDestCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [0, 0, theWidth - 1, 0, theWidth - 1, theHeight - 1, 0, theHeight - 1]); //
+  let srcCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [tl.corner.x, tl.corner.y, tr.corner.x, tr.corner.y, br.corner.x, br.corner.y, bl.corner.x, bl.corner.y]);
+  let dsize = new cv.Size(theWidth, theHeight);
+  let M = cv.getPerspectiveTransform(srcCoords, finalDestCoords)
+  cv.warpPerspective(src, dst, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
   cv.imshow('cropOutput', dst);
-  src.delete();
-  dst.delete();
 }
 
 inputElement.addEventListener('change', (e) => {

@@ -1,0 +1,35 @@
+{
+	"state": "",
+	"district": ,
+	"page": ,
+	"sections": [
+		{
+			"desc": "",
+			"max": ,
+			"secCoords": {
+				"TL_X": ,
+				"TL_Y": ,
+				"BR_X": ,
+				"BR_Y":
+			},
+			"bubbles": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y": ,
+					"text": ""
+				},
+			],
+			"writeins": [
+				{
+					"TL_X": ,
+					"TL_Y": ,
+					"BR_X": ,
+					"BR_Y":
+				}
+			],
+			"signatures": null
+		}
+	]
+}

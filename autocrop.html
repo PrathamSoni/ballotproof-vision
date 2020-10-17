@@ -34,7 +34,7 @@ imgElement.onload = function() {
 
   let contours = new cv.MatVector();
   let hierarchy = new cv.Mat();
-  cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+  cv.findContours(dst, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
 
   let areaarr = [];
 

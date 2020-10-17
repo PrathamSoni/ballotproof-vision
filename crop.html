@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hello OpenCV.js</title>
+</head>
+<body>
+<h2>Hello OpenCV.js</h2>
+<p id="status">OpenCV.js is loading...</p>
+<div>
+  <div class="inputoutput">
+    <img id="imageSrc" alt="No Image" />
+    <div class="caption">imageSrc <input type="file" id="fileInput" name="file" /></div>
+  </div>
+  <div class="inputoutput">
+    <canvas id="canvasOutput" ></canvas>
+    <div class="caption">canvasOutput</div>
+  </div>
+</div>
+
+<div>
+<h1 id="e1"> Is that good? </h1>
+<button type="button" id="e2">Yes</button>
+<button type="button" id="e3">No</button>
+<h1 id="e4">Perfect, Enjoy!</h1>
+</div>
+
+<div>
+  <div class="inputoutput">
+    <canvas id="srcInput" ></canvas>
+    <div class="caption">srcInput</div>
+  </div>
+
+  <div class="inputoutput">
+    <canvas id="cropOutput" ></canvas>
+    <div class="caption">cropOutput</div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var e1 = document.getElementById('e1');
+var e2 = document.getElementById('e2');
+var e3 = document.getElementById('e3');
+var e4 = document.getElementById('e4');
+
+e1.style.visibility = "hidden";
+e2.style.visibility = "hidden";
+e3.style.visibility = "hidden";
+e4.style.visibility = "hidden";
+
+let imgElement = document.getElementById('imageSrc');
+let inputElement = document.getElementById('fileInput');
+inputElement.addEventListener('change', (e) => {
+  imgElement.src = URL.createObjectURL(e.target.files[0]);
+}, false);
+
+imgElement.onload = function() {
+  auto();
+
+  e1.style.visibility = "visible";
+  e2.style.visibility = "visible";
+  e3.style.visibility = "visible";
+
+  e3.addEventListener("click", manual);
+
+  e2.addEventListener("click", 
+  function() {
+    e4.style.visibility = "visible";
+  });
+};
+
+function auto() {
+  let src = cv.imread(imgElement);
+  let dst = new cv.Mat();
+  let dstt = new cv.Mat();
+  let ksize = new cv.Size(5,5);
+  cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);    
+  cv.Canny(dst, dst, 75, 200, 3, false);
+  cv.threshold(dst, dst, 50, 255, cv.THRESH_BINARY);  
+
+  let contours = new cv.MatVector();
+  let hierarchy = new cv.Mat();
+  cv.findContours(dst, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+  
+  // for (let i = 0; i < contours.size(); ++i) {
+  //   let color = new cv.Scalar(240, 248, 255);
+  //   cv.drawContours(dst, contours, i, color, 5, cv.LINE_8, hierarchy, 100);
+  // }
+
+  let areaarr = [];
+
+  for (let i = 0; i < contours.size(); i++) {
+    areaarr.push(cv.arcLength(contours.get(i), false))
+  }
+
+  areaarr.sort(function(a, b){return a-b});
+  areaarr.reverse();
+  newarr = areaarr.slice(0,1);
+  //console.log(areaarr)
+
+  for (let i = 0; i < contours.size(); i++) {
+    let color = new cv.Scalar(240, 248, 255);
+    let area = cv.arcLength(contours.get(i), false);
+    if (newarr.includes(area)) {
+      realContour = contours.get(i);
+      //console.log(area)
+      cv.drawContours(dst, contours, i, color, 5, cv.LINE_8, hierarchy, 100);
+    }
+  }
+
+  contPeri = cv.arcLength(realContour, true)
+  contApprox = new cv.Mat();
+  cv.approxPolyDP(realContour, contApprox, 0.02 * contPeri, true)
+
+  let corner1 = new cv.Point(contApprox.data32S[0], contApprox.data32S[1]);
+  let corner2 = new cv.Point(contApprox.data32S[2], contApprox.data32S[3]);
+  let corner3 = new cv.Point(contApprox.data32S[4], contApprox.data32S[5]);
+  let corner4 = new cv.Point(contApprox.data32S[6], contApprox.data32S[7]);
+
+  let cornerArray = [{ corner: corner1 }, { corner: corner2 }, { corner: corner3 }, { corner: corner4 }];
+
+  cornerArray.sort((item1, item2) => { return (item1.corner.y < item2.corner.y) ? -1 : (item1.corner.y > item2.corner.y) ? 1 : 0; }).slice(0, 5);
+
+  let tl = cornerArray[0].corner.x < cornerArray[1].corner.x ? cornerArray[0] : cornerArray[1];
+  let tr = cornerArray[0].corner.x > cornerArray[1].corner.x ? cornerArray[0] : cornerArray[1];
+  let bl = cornerArray[2].corner.x < cornerArray[3].corner.x ? cornerArray[2] : cornerArray[3];
+  let br = cornerArray[2].corner.x > cornerArray[3].corner.x ? cornerArray[2] : cornerArray[3];
+
+  let widthBottom = Math.hypot(br.corner.x - bl.corner.x, br.corner.y - bl.corner.y);
+  let widthTop = Math.hypot(tr.corner.x - tl.corner.x, tr.corner.y - tl.corner.y);
+  let theWidth = (widthBottom > widthTop) ? widthBottom : widthTop;
+  let heightRight = Math.hypot(tr.corner.x - br.corner.x, tr.corner.y - br.corner.y);
+  let heightLeft = Math.hypot(tl.corner.x - bl.corner.x, tr.corner.y - bl.corner.y);
+  let theHeight = (heightRight > heightLeft) ? heightRight : heightLeft;
+
+  let finalDestCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [0, 0, theWidth - 1, 0, theWidth - 1, theHeight - 1, 0, theHeight - 1]); //
+  let srcCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [tl.corner.x, tl.corner.y, tr.corner.x, tr.corner.y, br.corner.x, br.corner.y, bl.corner.x, bl.corner.y]);
+  let dsize = new cv.Size(theWidth, theHeight);
+  let M = cv.getPerspectiveTransform(srcCoords, finalDestCoords)
+  cv.warpPerspective(src, dstt, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+
+  cv.imshow('canvasOutput', dstt); 
+  src.delete();
+  dst.delete();
+  contours.delete();
+  hierarchy.delete();
+}
+
+function manual() {
+  let imgElement = document.getElementById('imageSrc');
+  let inputElement = document.getElementById('fileInput');
+  src = cv.imread(imgElement);
+  cv.imshow("srcInput", src);
+  var cornerArray = [];
+
+  //let canvasElem = document.querySelector("canvas");
+  let canvasElem = document.getElementById("srcInput");
+  canvasElem.addEventListener("mousedown", function(e) {
+    cornerArray = getMousePosition(canvasElem, e, cornerArray);
+    console.log(cornerArray)
+    if (cornerArray.length == 4) {
+      crop (src, cornerArray);
+      cornerArray = [];
+    }
+  });
+}
+
+function getMousePosition(canvas, event, cornerArray) {
+  let rect = canvas.getBoundingClientRect();
+  let x = event.clientX - rect.left;
+  let y = event.clientY - rect.top;
+  cornerArray.push([x, y]);
+  return cornerArray;
+}
+
+function crop(src, cornerArray) {
+  let dstmanual = new cv.Mat();
+  let a = cornerArray[0];
+  let b = cornerArray[1];
+  let c = cornerArray[2];
+  let d = cornerArray[3];
+  let corner1 = new cv.Point(a[0], a[1]);
+  let corner2 = new cv.Point(b[0], b[1]);
+  let corner3 = new cv.Point(c[0], c[1]);
+  let corner4 = new cv.Point(d[0], d[1]);
+
+  let cropArray = [{ corner: corner1 }, { corner: corner2 }, { corner: corner3 }, { corner: corner4 }];
+
+  cropArray.sort((item1, item2) => { return (item1.corner.y < item2.corner.y) ? -1 : (item1.corner.y > item2.corner.y) ? 1 : 0; }).slice(0, 5);
+
+  let tl = cropArray[0].corner.x < cropArray[1].corner.x ? cropArray[0] : cropArray[1];
+  let tr = cropArray[0].corner.x > cropArray[1].corner.x ? cropArray[0] : cropArray[1];
+  let bl = cropArray[2].corner.x < cropArray[3].corner.x ? cropArray[2] : cropArray[3];
+  let br = cropArray[2].corner.x > cropArray[3].corner.x ? cropArray[2] : cropArray[3];
+
+  let widthBottom = Math.hypot(br.corner.x - bl.corner.x, br.corner.y - bl.corner.y);
+  let widthTop = Math.hypot(tr.corner.x - tl.corner.x, tr.corner.y - tl.corner.y);
+  let theWidth = (widthBottom > widthTop) ? widthBottom : widthTop;
+  let heightRight = Math.hypot(tr.corner.x - br.corner.x, tr.corner.y - br.corner.y);
+  let heightLeft = Math.hypot(tl.corner.x - bl.corner.x, tr.corner.y - bl.corner.y);
+  let theHeight = (heightRight > heightLeft) ? heightRight : heightLeft;
+
+  let finalDestCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [0, 0, theWidth - 1, 0, theWidth - 1, theHeight - 1, 0, theHeight - 1]); //
+  let srcCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [tl.corner.x, tl.corner.y, tr.corner.x, tr.corner.y, br.corner.x, br.corner.y, bl.corner.x, bl.corner.y]);
+  let dsize = new cv.Size(theWidth, theHeight);
+  let M = cv.getPerspectiveTransform(srcCoords, finalDestCoords)
+  cv.warpPerspective(src, dstmanual, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+  cv.imshow('cropOutput', dstmanual);
+}
+
+function onOpenCvReady() {
+  document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
+}
+</script>
+<script async src="opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+
+
+
+</body>
+</html>

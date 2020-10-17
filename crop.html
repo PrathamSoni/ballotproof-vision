@@ -5,6 +5,9 @@
 <title>Hello OpenCV.js</title>
 </head>
 <body>
+<script type = "text/javascript" src="AZ-5-1.json"></script>
+<script type = "text/javascript" src="AZ-5-2.json"></script>
+const fs = require('fs');
 <h2>Hello OpenCV.js</h2>
 <p id="status">OpenCV.js is loading...</p>
 <div>
@@ -54,6 +57,12 @@ inputElement.addEventListener('change', (e) => {
   imgElement.src = URL.createObjectURL(e.target.files[0]);
 }, false);
 
+let dstFinal = new cv.Mat(); 
+
+let bubbleArray = [];
+let writeinArray = [];
+let signArray = [];
+
 imgElement.onload = function() {
   auto();
 
@@ -69,10 +78,12 @@ imgElement.onload = function() {
   });
 };
 
+
+
+
 function auto() {
   let src = cv.imread(imgElement);
   let dst = new cv.Mat();
-  let dstt = new cv.Mat();
   let ksize = new cv.Size(5,5);
   cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);    
   cv.Canny(dst, dst, 75, 200, 3, false);
@@ -137,9 +148,9 @@ function auto() {
   let srcCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [tl.corner.x, tl.corner.y, tr.corner.x, tr.corner.y, br.corner.x, br.corner.y, bl.corner.x, bl.corner.y]);
   let dsize = new cv.Size(theWidth, theHeight);
   let M = cv.getPerspectiveTransform(srcCoords, finalDestCoords)
-  cv.warpPerspective(src, dstt, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+  cv.warpPerspective(src, dstFinal, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
 
-  cv.imshow('canvasOutput', dstt); 
+  cv.imshow('canvasOutput', dstFinal); 
   src.delete();
   dst.delete();
   contours.delete();
@@ -174,7 +185,6 @@ function getMousePosition(canvas, event, cornerArray) {
 }
 
 function crop(src, cornerArray) {
-  let dstmanual = new cv.Mat();
   let a = cornerArray[0];
   let b = cornerArray[1];
   let c = cornerArray[2];
@@ -204,9 +214,57 @@ function crop(src, cornerArray) {
   let srcCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [tl.corner.x, tl.corner.y, tr.corner.x, tr.corner.y, br.corner.x, br.corner.y, bl.corner.x, bl.corner.y]);
   let dsize = new cv.Size(theWidth, theHeight);
   let M = cv.getPerspectiveTransform(srcCoords, finalDestCoords)
-  cv.warpPerspective(src, dstmanual, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
-  cv.imshow('cropOutput', dstmanual);
+  cv.warpPerspective(src, dstFinal, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+  cv.imshow('cropOutput', dstFinal);
 }
+
+function additionalCrops(){
+  var recieved_data = JSON.parse(AZ-5-1);
+  for (i = 0; i < recieved_data.sections.size; i++){
+    var section = recieved_data.sections[i]
+    console.log(i)
+
+    for (j = 0; j < section.bubbles.size; j++){
+      let tempArrayBubble = [];
+      
+      tempArrayBubble.push(section.bubbles[j]);
+
+      if (j == section.bubbles.size - 1){
+        bubbleArray.push(tempArrayBubble);
+        }
+    }
+
+    for (k = 0; k < section.writeins.size; k++){
+      let tempWriteArray = [];
+
+      tempWriteArray.push(section.writeins[j]);
+
+      if (j == section.writeins.size - 1){
+        bubbleArray.push(tempWriteArray);
+        }
+
+    }
+    
+    for (l = 0; l < section.signatures.size; k++){
+      let tempSignArray = [];
+
+      tempSignArray.push(section.signatures[j]);
+
+      if (j == section.signatures.size - 1){
+        bubbleArray.push(tempSignArray);
+        }
+        
+    }
+
+  }
+
+  //At this point all json is separated into their separate arrays categorized by bubble, writein, signs
+
+  
+
+
+}
+
 
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';

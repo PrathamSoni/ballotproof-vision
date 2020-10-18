@@ -1,6 +1,6 @@
 ![logo](logoHiRes.png)
 ## Voting made faster, smarter, and more secure.
-\
+
 \@authors:\
 [\@Devrath Iyer](https://github.com/DevrathIyer) (Stanford '24)\
 [\@Ethan Shaotran](https://github.com/Shaotran) (Harvard '25)\
@@ -8,18 +8,18 @@
 [\@Pratham Soni](https://github.com/PrathamSoni) (Stanford '24)
 
 ## Introduction
-With an increasing emphasis on social distancing and remote engagement as a result of the COVID-19 pandemic, mail-in voting surged from 24.9% to 50.3% of ballots in the 2016 and 2020 primaries, respectively. This surge in mail-in ballots has also meant for an increasing amount of ballots rejected due to avoidable human errors. As first-time voters ourselves, this issue is extremely critical to us as our generation seeks democratic representation. In an effort to reduce rejection rates, we introduce BallotProof, a methodology built for faster, smarter, and more secure checking of ballots.
+With an emphasis on social distancing and remote engagement as a result of the COVID-19 pandemic mail-in voting surged from 24.9% to 50.3% of ballots [1] in the 2016 and 2020 primaries, respectively. This surge will also trigger an unfortunate increase in ballots rejected due to the avoidable human error; we’ve already started to see the effects, with half a million ballots rejected [2] in the 2020 primaries. As first-time voters, this issue is extremely critical to us as our generation seeks democratic representation. In an effort to reduce rejection rates, we introduce BallotProof, a methodology built for faster, smarter, and more secure validation of ballots.
 
 ## What It Does
 BallotProof is built from the ground up with ease of use and security in mind. As a result, the platform was developed with a server-independent structure, with all image analysis done on the client-side to avoid any risk of data leakage. BallotProof takes in input images of the front and back sides of your ballot and uses image analysis to specifically determine which errors can prevent your critical vote from being counted. We handle everything for you from start to finish, with automatic cropping of your pictures to showing exactly which sections in which errors were made and specific templates made for your unique ballot.
 
 Our methods are currently able to point out if you've made any of the following:
-  1. Determine if the correct color pen was used.
-  2. Determine if a section was left empty.
-  3. Determine if too many bubbles were filled in.
-  4. Make sure all write-ins are formatted correctly.
-  5. Ensure that bubbles are filled in properly.
-  6. And more!
+1.	Incorrect pen colors
+2.	Blank sections
+3.	Excessive bubble fill-ins
+4.	Improper write-in format
+5.	Ban bubble fill-ins
+6.	And much more!
 
 **And all you need to do is enter your address and take pictures of two images without fear of your data being compromised!**
 
@@ -56,3 +56,6 @@ as tests for model functionality.
 - A huge thanks to HackGT for setting up this great event, the opportunity to
 compete, and the great events over the weekend.
 - We thank the OpenCV guide for getting us started for in-browser image analysis.
+
+[1]: https://www.pewresearch.org/fact-tank/2020/10/13/mail-in-voting-became-much-more-common-in-2020-primaries-as-covid-19-spread/?fbclid=IwAR3atHgIz8Fi1KZCuDHHr9I_XsJjnS5uiLbjRVeeY7h2-Vp9_q8expubtCw
+[2]: https://www.washingtonpost.com/politics/rejected-mail-ballots/2020/08/23/397fbe92-db3d-11ea-809e-b8be57ba616e_story.html?fbclid=IwAR2UdN9JlgRR4iQWR6_vXgmU69rCreKc_dUq_8kbpow3coJHwY4elV3UgSc

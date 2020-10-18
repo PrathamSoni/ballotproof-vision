@@ -398,16 +398,14 @@ function isFilled(feat, threshComplete, threshSemi) {
 
 function colorOK(feature) {
   let color = descrimColors(feature);
-  console.log(color)
   return (color == "blue" || color == "black");
 }
 
 function descrimColors(mat) {
   let mean = cv.mean(mat);
-  //console.log(mean);
-  let black = [228,228,228];
-  let blue = [237,236,244];
-  let red = [249,212,215];
+  let black = [94,95,93];
+  let blue = [118,107,161];
+  let red = [232, 96, 100];
   let mb = loss(mean, black);
   let mr = loss(mean, red);
   let mbl = loss(mean, blue);

@@ -233,57 +233,69 @@ function additionalCrops(dstFinal) {
   for (i = 0; i < annotationJSON.sections.length; i++){
     var section = annotationJSON.sections[i]
     let sectionArr = []
+    let colorArr = []
+
     if (section.bubbles) {
+      let bubbleArr = [];
       for (j = 0; j < section.bubbles.length; j++){
         let bubble = section.bubbles[j];
-        let bubbleArr = [];
-        let rect = new cv.Rect(bubble.TL_X, bubble.TL_Y, (bubble.BR_X-bubble.TL_X), (bubble.BR_Y-bubble.TL_Y));
 
-        bubbleArr.push(dstFinal.roi(rect));
-        
-        if (j == section.bubbles.length - 1){
-          sectionArr.push(bubbleArr);
+        let rect = new cv.Rect(bubble.TL_X, bubble.TL_Y, (bubble.BR_X-bubble.TL_X), (bubble.BR_Y-bubble.TL_Y));
+        let feature = dstFinal.roi(rect);
+        let filled = isFilled(feature, 0.6, 0.45);
+
+        if (filled != 0 && !colorOK(feature)) {
+          colorArr.push("bubbleColor");
         }
+
+        bubbleArr.push(filled);
       }
+      sectionArr.push(bubbleArr);
     } else {
       sectionArr.push(null)
     }
 
     if (section.writeins) {
+      let writeinsArr = [];
       for (k = 0; k < section.writeins.length; k++){
         let writein = section.writeins[k];
-        let writeinsArr = [];
-
-        // console.log(i)
-        // console.log(k)
 
         let rect = new cv.Rect(writein.TL_X, writein.TL_Y, (writein.BR_X-writein.TL_X), (writein.BR_Y-writein.TL_Y));
-        writeinsArr.push(dstFinal.roi(rect));
+        let feature = dstFinal.roi(rect);
+        let filled = isFilled(feature, 0.25, 0.15);
 
-        if (j == section.writeins.length - 1){
-          sectionArr.push(writeinsArr);
+        if (filled != 0 && !colorOK(feature)) {
+          colorArr.push("writeinColor");
         }
+
+        writeinsArr.push(filled);
       }
+      sectionArr.push(writeinsArr);
     } else {
       sectionArr.push(null)
     }
 
     if (section.signatures) {
+      let sigsArr = [];
       for (l = 0; l < section.signatures.length; k++){
         let sig = section.signatures[l]
-        let sigsArr = [];
 
         let rect = new cv.Rect(sig.TL_X, sig.TL_Y, (sig.BR_X-sig.TL_X), (sig.BR_Y-sig.TL_Y));
-        sigsArr.push(dstFinal.roi(rect));
+        let feature = dstFinal.roi(rect);
+        let filled = isFilled(feature, 0.25, 0.15);
 
-        if (j == section.signatures.length - 1){
-          sectionArr.push(sigsArr);
+        if (filled != 0 && !colorOK(feature)) {
+          colorArr.push("sigColor");
         }
+
+        sigsArr.push(filled);
       }
+      sectionArr.push(sigsArr);
     } else {
       sectionArr.push(null)
     }
-
+    sectionArr.push(section.max)
+    sectionArr.push(colorArr)
     featureArr.push(sectionArr)
   }
   return featureArr;
@@ -291,17 +303,121 @@ function additionalCrops(dstFinal) {
 
 function featureExtractDetect(dstFinal, finalSize) {
   cv.resize(dstFinal, dstFinal, finalSize, 0, 0, cv.INTER_AREA);
-  let features = additionalCrops(dstFinal)
-  let feature = features[3][0][0] //3rd section, bubbles, first bubble
-  cv.imshow('cropOutput', feature);
+  let features = additionalCrops(dstFinal);
+  console.log(features)
 
-  console.log(isFilled(feature))
+  let errorArr = [];
+
+  for (s = 0; s < features.length; s++) {
+  //for (s = 0; s < 2; s++) {
+    let section = features[s];
+    let errs = []; //[bubbleCt, bubbleColor, writeinColor, sigColor, writeInBubble]
+
+    //Number Bubbles Correct
+    let bubbleCter = 0;
+    for (bb = 0; bb < section[0].length; bb++) {
+      if (section[0][bb] != 0) {
+        bubbleCter++;
+      }
+    }
+
+    if (bubbleCter > section[3]) {
+      errs.push(bubbleCter);
+    } else {
+      errs.push('OK');
+    }
+
+    // //Color Correct
+    if (section[4].includes("bubbleColor")) {
+      errs.push("bubbleColor");
+    } else {
+      errs.push("OK")
+    }
+    if (section[4].includes("writeinColor")) {
+      errs.push("writeinColor");
+    } else {
+      errs.push("OK")
+    }
+    if (section[4].includes("sigColor")) {
+      errs.push("sigColor");
+    } else {
+      errs.push("OK")
+    }
+
+    //Write-in Matching Bubble
+    let writeInBubbleFlag = 0;
+    if (section[1]) {
+      for (w = 0; w < section[1].length; w++) {
+        if (section[1][w] != 0 && section[0][section[0].length-section[1].length+w] == 0) { //If there's a write-in, there must be a corresponding bubble
+          console.log(s," hi")
+          writeInBubbleFlag++;
+        }
+      }
+
+      for (b = section[0].length-section[1].length; b < section[0].length; b++) {
+        if (section[0][b] != 0 && section[1][section[0].length-b-1] == 0) { //If there's a bubble, there must be a corresponding write-in
+          console.log(s,' hi2')
+          writeInBubbleFlag++;
+        }
+      }
+    }
+    if (writeInBubbleFlag > 0) {
+      errs.push('writeinBubbleMatch');
+    } else {
+      errs.push('OK')
+    }
+    
+    errorArr.push(errs);
+  }
+
+  console.log(errorArr);
 }
 
-function isFilled(bubbleFeature) {
-  cv.cvtColor(bubbleFeature, bubbleFeature, cv.COLOR_RGBA2GRAY);
-  cv.threshold(bubbleFeature, bubbleFeature, 200, 255, cv.THRESH_BINARY | cv.THRESH_OTSU);
-  return ((1.0 - cv.countNonZero(bubbleFeature)/parseFloat(bubbleFeature.rows*bubbleFeature.cols)) > 0.60)
+function isFilled(feature, threshComplete, threshSemi) {
+  cv.cvtColor(feature, feature, cv.COLOR_RGBA2GRAY);
+  cv.threshold(feature, feature, 200, 255, cv.THRESH_BINARY | cv.THRESH_OTSU);
+  let percentageFilled = 1.0 - cv.countNonZero(feature)/parseFloat(feature.rows*feature.cols)
+
+  if (percentageFilled >= threshComplete) {
+    return 2;
+  } else if (percentageFilled >= threshSemi) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+function colorOK(feature) {
+  let color = descrimColors(feature);
+  return (color == "blue" || color == "black");
+}
+
+function descrimColors(mat) {
+  let mean = cv.mean(mat);
+  let black = [228,228,228];  
+  let blue = [237,236,244];
+  let red = [249,212,215];
+  if (loss(mean, black) > loss(mean, blue)) {
+    if (loss(mean, red) > loss(mean, blue)){
+      return "blue";
+    }
+    else {
+      return "red";
+    }
+  }
+  else {
+    if (loss(mean, red) > loss(mean, black)){
+      return "black";
+    }
+    else {
+      return "red";
+    }
+  }
+  
+}
+
+function loss(array1, array2) {
+  return (array1[0]-array2[0])**2 + (array1[1]-array2[1])**2 + (array1[2]-array2[2])**2;
 }
 
 function onOpenCvReady() {

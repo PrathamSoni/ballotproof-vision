@@ -77,7 +77,6 @@ imgElement.onload = function() {
     featureExtractDetect(dstFinal, finalSize);
   });
 
-
 };
 
 
@@ -304,7 +303,6 @@ function additionalCrops(dstFinal) {
 function featureExtractDetect(dstFinal, finalSize) {
   cv.resize(dstFinal, dstFinal, finalSize, 0, 0, cv.INTER_AREA);
   let features = additionalCrops(dstFinal);
-  console.log(features)
 
   let errorArr = [];
 
@@ -349,14 +347,12 @@ function featureExtractDetect(dstFinal, finalSize) {
     if (section[1]) {
       for (w = 0; w < section[1].length; w++) {
         if (section[1][w] != 0 && section[0][section[0].length-section[1].length+w] == 0) { //If there's a write-in, there must be a corresponding bubble
-          console.log(s," hi")
           writeInBubbleFlag++;
         }
       }
 
       for (b = section[0].length-section[1].length; b < section[0].length; b++) {
         if (section[0][b] != 0 && section[1][section[0].length-b-1] == 0) { //If there's a bubble, there must be a corresponding write-in
-          console.log(s,' hi2')
           writeInBubbleFlag++;
         }
       }
@@ -373,8 +369,21 @@ function featureExtractDetect(dstFinal, finalSize) {
   console.log(errorArr);
 }
 
-function isFilled(feature, threshComplete, threshSemi) {
-  cv.cvtColor(feature, feature, cv.COLOR_RGBA2GRAY);
+function getCandidate(sectionNum,bubbleNum) {
+  return annotationJSON.sections[sectionNum].bubbles[bubbleNum].text;
+}
+
+function getSectionDescs() {
+  let descArr = []
+  for (s = 0; s < annotationJSON.sections.length; s++) {
+    descArr.push(annotationJSON.sections[s].desc)
+  }
+  return descArr;
+}
+
+function isFilled(feat, threshComplete, threshSemi) {
+  let feature = new cv.Mat();
+  cv.cvtColor(feat, feature, cv.COLOR_RGBA2GRAY);
   cv.threshold(feature, feature, 200, 255, cv.THRESH_BINARY | cv.THRESH_OTSU);
   let percentageFilled = 1.0 - cv.countNonZero(feature)/parseFloat(feature.rows*feature.cols)
 
@@ -389,11 +398,13 @@ function isFilled(feature, threshComplete, threshSemi) {
 
 function colorOK(feature) {
   let color = descrimColors(feature);
+  console.log(color)
   return (color == "blue" || color == "black");
 }
 
 function descrimColors(mat) {
   let mean = cv.mean(mat);
+  //console.log(mean);
   let black = [228,228,228];
   let blue = [237,236,244];
   let red = [249,212,215];

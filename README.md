@@ -1,4 +1,4 @@
-# ballotproof
+![logo](logoHiRes.png)
 ## Voting made faster, smarter, and more secure.
 
 \@authors:\

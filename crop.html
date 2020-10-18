@@ -68,16 +68,13 @@ imgElement.onload = function() {
 
   e3.addEventListener("click", function() {
     dstFinal = manual();
+    //featureExtractDetect(dstFinal, finalSize) moved to crop(); to account for delay
   });
 
   e2.addEventListener("click", 
   function() {
     e4.style.visibility = "visible";
-
-    cv.resize(dstFinal, dstFinal, finalSize, 0, 0, cv.INTER_AREA);
-    let features = additionalCrops(dstFinal)
-    console.log(features)
-    cv.imshow('cropOutput', features[10][0][0])
+    featureExtractDetect(dstFinal, finalSize);
   });
 
 
@@ -224,6 +221,8 @@ function crop(src, cornerArray) {
   cv.warpPerspective(src, dstcrop, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
   cv.imshow('cropOutput', dstcrop);
 
+  let finalSize = new cv.Size(1700, 3800);
+  featureExtractDetect(dstcrop, finalSize)
   return dstcrop;
 }
 
@@ -240,18 +239,6 @@ function additionalCrops(dstFinal) {
         let bubbleArr = [];
         let rect = new cv.Rect(bubble.TL_X, bubble.TL_Y, (bubble.BR_X-bubble.TL_X), (bubble.BR_Y-bubble.TL_Y));
 
-        // if (0 <= rect.x && 0 <= rect.width && rect.x + rect.width <= dstFinal.cols) {
-        //   console.log("1")
-        // }
-
-        // if (0 <= rect.y && 0 <= rect.height) {
-        //   console.log('2')
-        // }
-
-        // if (rect.y + rect.height <= dstFinal.rows) {
-        //   console.log('3')
-        // }
-
         bubbleArr.push(dstFinal.roi(rect));
         
         if (j == section.bubbles.length - 1){
@@ -264,7 +251,7 @@ function additionalCrops(dstFinal) {
 
     if (section.writeins) {
       for (k = 0; k < section.writeins.length; k++){
-        let writein = section.writeins[k]
+        let writein = section.writeins[k];
         let writeinsArr = [];
 
         // console.log(i)
@@ -302,6 +289,20 @@ function additionalCrops(dstFinal) {
   return featureArr;
 }
 
+function featureExtractDetect(dstFinal, finalSize) {
+  cv.resize(dstFinal, dstFinal, finalSize, 0, 0, cv.INTER_AREA);
+  let features = additionalCrops(dstFinal)
+  let feature = features[3][0][0] //3rd section, bubbles, first bubble
+  cv.imshow('cropOutput', feature);
+
+  console.log(isFilled(feature))
+}
+
+function isFilled(bubbleFeature) {
+  cv.cvtColor(bubbleFeature, bubbleFeature, cv.COLOR_RGBA2GRAY);
+  cv.threshold(bubbleFeature, bubbleFeature, 200, 255, cv.THRESH_BINARY | cv.THRESH_OTSU);
+  return ((1.0 - cv.countNonZero(bubbleFeature)/parseFloat(bubbleFeature.rows*bubbleFeature.cols)) > 0.60)
+}
 
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';

@@ -1,17 +1,34 @@
 # ballotproof
-Voting made faster, smarter, and more secure.
+## Voting made faster, smarter, and more secure.
 
-The 2020 election is truly unique. In the era of Covid-19, mail-in voting has
-taken center stage...As first time voters,... ballootproof...support for...
+\@authors:
+[\@Devrath Iyer](https://github.com/DevrathIyer)
+[\@Ethan Shaotran](https://github.com/Shaotran)
+[\@Koushik Sridhar](https://github.com/koushiksridhar)
+[\@Pratham Soni](https://github.com/PrathamSoni)
 
 ## Introduction
-With an increasing emphasis on social distancing and remote engagement as a result of the COVID-19 pandemic, mail-in voting surged from 24.9% to 50.3% of ballots in the 2016 and 2020 primaries respectively. With this surge in mail-in ballots, this also means that an increasing amount of ballots are rejected due to human error in the mail-in ballot. In an effort to reduce rejection rates, we introduce BallotProof, a method for fast, smart, and secure checking of ballots.
+With an increasing emphasis on social distancing and remote engagement as a result of the COVID-19 pandemic, mail-in voting surged from 24.9% to 50.3% of ballots in the 2016 and 2020 primaries, respectively. This surge in mail-in ballots has also meant for an increasing amount of ballots rejected due to avoidable human errors. As first-time voters ourselves, this issue is extremely critical to us as our generation seeks democratic representation. In an effort to reduce rejection rates, we introduce ballotproof, a methodology built for faster, smarter, and more secure checking of ballots.
 
 ## What It Does
-BallotProof is built from the ground up with ease of use and security in mind. As a result, the platform was developed with a serverless structure, with all image analysis done on the client-side. BallotProof takes in input images of the front and back sides of your ballot and uses image analysis to (PRATH START HERE)
+ballotproof is built from the ground up with ease of use and security in mind. As a result, the platform was developed with a server-independent structure, with all image analysis done on the client-side to avoid any risk of data leakage. ballotproof takes in input images of the front and back sides of your ballot and uses image analysis to specifically determine which errors can prevent your critical vote from being counted. We handle everything for you from start to finish, with automatic cropping of your pictures to showing exactly which sections in which errors were made and specific templates made for your unique ballot.
 
-## How we built it
-Geocodio - Congressional District Checking
+Our methods are currently able to point out if you've made any of the following:
+  1. Determine if the correct color pen was used.
+  2. Determine if a section was left empty.
+  3. Determine if too many bubbles were filled in.
+  4. Make sure all write-ins are formatted correctly.
+  5. Ensure that bubbles are filled in properly.
+  6. And more!
+
+**And all you need to do is enter your address and take pictures of two images without fear of your data being compromised!**
+
+## How we built it (Programs, Tools, & APIs)
+- Geocodio - Congressional District Checking
+- OpenCV.js
+- PIL
+-
+
 
 
 
@@ -23,11 +40,6 @@ POLLING LOCATION OR BE SENT IN THE MAIL.
 The generation script (generate.py) enables the generation of semi-randomized
 ballots that fit certain satisfiability criteria. We use these sample ballots
 as tests for model functionality.
-
-## Packages & Tools
-- OpenCV.js
-- PIL
--
 
 ## Attributions
 - A huge thanks to HackGT for setting up this great event, the opportunity to

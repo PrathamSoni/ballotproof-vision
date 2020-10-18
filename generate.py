@@ -16,7 +16,7 @@ badFiles = list(Counter(glob("primitives\\*")) - Counter(accurateFiles)-Counter(
 sections1 = json1["sections"]
 sections2 = json2["sections"]
 
-generatedballot1 = ballot1.copy()
+generatedballot1 = ballot1.copy().convert('RGBA')
 for section in sections1:
     bubbles = section["bubbles"]
     max = section["max"]
@@ -27,11 +27,11 @@ for section in sections1:
             shape_x, shape_y = shape.size
             center_x = bubble["TL_X"] + bubble["BR_X"]
             center_y = bubble["TL_Y"] + bubble["BR_Y"]
-            generatedballot1.paste(shape, ((center_x-shape_x)//2, (center_y-shape_y)//2), mask=shape)
+            generatedballot1.paste(shape, ((center_x-shape_x)//2, (center_y-shape_y)//2),mask=shape)
 
 generatedballot1.save("test\\generatedballot-1.png")
 
-generatedballot2 = ballot2.copy()
+generatedballot2 = ballot2.copy().convert('RGBA')
 for section in sections2:
     bubbles = section["bubbles"]
     max = section["max"]
@@ -42,6 +42,7 @@ for section in sections2:
             shape_x, shape_y = shape.size
             center_x = bubble["TL_X"] + bubble["BR_X"]
             center_y = bubble["TL_Y"] + bubble["BR_Y"]
-            generatedballot2.paste(shape, ((center_x-shape_x)//2, (center_y-shape_y)//2), mask=shape)
+            generatedballot2.paste(shape, ((center_x-shape_x)//2, (center_y-shape_y)//2),mask=shape)
 
-generatedballot2.save("test\\generatedballot-2.png")
+
+generatedballot2.save("test\\generatedballot-2.png", bits=32)

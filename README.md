@@ -1,4 +1,8 @@
 ![logo](logoHiRes.png)
+
+[Top 8 Project at HackGT!!](https://devpost.com/software/ballotproof-vision)
+
+[Full-repo](https://github.com/DevrathIyer/ballotproof)
 ## Voting made faster, smarter, and more secure.
 
 \@authors:\
